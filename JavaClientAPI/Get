@@ -2,6 +2,8 @@ package javabrains.ApiCall;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+
+//http://www.mkyong.com/webservices/jax-rs/restful-java-client-with-jersey-client/
 /*
 
 Jersey Client Dependency
