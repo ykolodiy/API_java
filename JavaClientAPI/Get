@@ -1,0 +1,51 @@
+package javabrains.ApiCall;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+/*
+
+Jersey Client Dependency
+To use Jersey client APIs, declares “jersey-client.jar” in your pom.xml file.
+
+File : pom.xml
+
+<dependency>
+	<groupId>com.sun.jersey</groupId>
+	<artifactId>jersey-client</artifactId>
+	<version>1.8</version>
+</dependency>
+
+
+*/
+public class App 
+{
+    public static void main( String[] args )
+    {
+    	try {
+
+    		Client client = Client.create();
+
+    		WebResource webResource = client
+    		   .resource("http://jsonplaceholder.typicode.com/posts/1");
+
+    		ClientResponse response = webResource.accept("application/json")
+                       .get(ClientResponse.class);
+
+    		if (response.getStatus() != 200) {
+    		   throw new RuntimeException("Failed : HTTP error code : "
+    			+ response.getStatus());
+    		}
+
+    		String output = response.getEntity(String.class);
+
+    		System.out.println("Output from Server .... \n");
+    		System.out.println(output);
+
+    	  } catch (Exception e) {
+
+    		e.printStackTrace();
+
+    	  }
+
+    	}
+    }
