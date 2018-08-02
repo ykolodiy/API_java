@@ -1,0 +1,53 @@
+<!--- 
+ 0 enable api and services https://console.developers.google.com/apis get .p12 file
+1 the serviceAccountID email must have access to GA profile (read and analyze level) 
+how to add email to GA --->
+<!--- 2 path to your .p12 file in pathToKeyFile (make sure it is NOT browsable 
+
+code taken from https://github.com/jensbits/CF-GA-service
+
+run http://localhost:5555/GAPI2/getData.cfm
+
+  
+--->
+
+<!--- cfanalytics.cfc is saved in folder named cfanalytics hence the path "cfanalytics.cfanalytics" --->
+<!--- use whatever path you saved the cfanalytics.cfc to --->
+<cfset cfanalytics = createObject("component", "cfanalytics.cfanalytics").init(
+										serviceAccountID="gaeclipse@poseaccount.com",
+										pathToKeyFile=expandPath("positive-apeb66.p12"), 
+			                            analyticsAppName="GApse") />
+																		
+<cfset cfanalytics.buildAnalytics()/>
+
+<!--- run this only to get needed profile info. comment out or delete once you have the profile id --->
+<cfset GAprofiles = cfanalytics.getProfiles() />
+
+<!--- get profiles info. includes the profile id needed for the tableId parameter below --->
+<cfdump var="#GAprofiles#">
+
+<!--- tableId (profile id) of GA account to access --->
+<!---note that tableId, startDate, endDate, and metrics are required per Google --->
+<!--- dimensions, sort, filters, and maxResults are optional. maxResults default is 25 --->
+<cfset GAdata = cfanalytics.getData(tableId="ga:170397275", 
+					     	startDate="2017-01-01",
+					     	endDate="2017-07-31",
+					     	metrics="ga:visits",
+					     	dimensions="ga:source,ga:keyword",
+					     	sort="-ga:visits,ga:source",
+					     	filters="ga:medium==organic",
+					     	maxResults=50) />
+									 
+<!--- dump the structure returned --->
+<cfdump var="#GAdata#">
+
+<!--- tableId (profile id) of GA account to access --->
+<!---note that tableId, and metrics are required per Google --->
+<!--- dimensions, sort, filters, and maxResults are optional. maxResults default is 25 --->
+<cfset GArealTimeData = cfanalytics.getRealTimeData(tableId="ga:170397275",
+								metrics="rt:pageviews",
+								dimensions="rt:pagePath",
+								sort="-rt:pageviews",
+								maxResults=25) />
+
+<cfdump var="#GArealTimeData#">
