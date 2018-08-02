@@ -6,9 +6,18 @@
 how to add email to GA   add service email like gaeclipse@positive-apex-202618.iam.gserviceaccount.com in analytic  --->
 <!--- 2 path to your .json file in pathToKeyFile (make sure it is NOT browsable 
 
-
-   
 --->
+
+/*steps https://developers.google.com/analytics/devguides/reporting/core/v4/quickstart/service-java
+dimention metric explorer https://developers.google.com/analytics/devguides/reporting/core/dimsmets
+your dashboar https://console.developers.google.com/iam-admin/iam/project?project=positive-apex-202618
+
+need to enable api project before https://console.developers.google.com/apis/api/analyticsreporting.googleapis.com/overview?project=positive-apex-202618&duration=PT1H
+code 
+
+
+add service email in server account
+*/
 
 
 
