@@ -1,10 +1,16 @@
 <!--- 
+
+
+
  0 enable api and services https://console.developers.google.com/apis get .p12 file
 1 the serviceAccountID email must have access to GA profile (read and analyze level) 
 how to add email to GA --->
 <!--- 2 path to your .p12 file in pathToKeyFile (make sure it is NOT browsable 
 
 code taken from https://github.com/jensbits/CF-GA-service
+
+to build queries try this
+https://ga-dev-tools.appspot.com/query-explorer/
 
 run http://localhost:5555/GAPI2/getData.cfm
 
