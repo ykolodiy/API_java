@@ -34,7 +34,9 @@ run http://localhost:5555/GAPI2/getData.cfm
 
 <!--- tableId (profile id) of GA account to access --->
 <!---note that tableId, startDate, endDate, and metrics are required per Google --->
-<!--- dimensions, sort, filters, and maxResults are optional. maxResults default is 25 --->
+<!--- dimensions, sort, filters, and maxResults are optional. maxResults default is 25 
+use this to build https://ga-dev-tools.appspot.com/query-explorer/
+--->
 <cfset GAdata = cfanalytics.getData(tableId="ga:170397275", 
 					     	startDate="2017-01-01",
 					     	endDate="2017-07-31",
