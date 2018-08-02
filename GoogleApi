@@ -1,4 +1,18 @@
 // installed app https://developers.google.com/analytics/devguides/reporting/core/v4/quickstart/installed-java
+
+<!--- 
+ 0 enable api and services https://console.developers.google.com/apis   get json file
+1 the serviceAccountID email must have access to GA profile (read and analyze level) 
+how to add email to GA   add service email like gaeclipse@positive-apex-202618.iam.gserviceaccount.com in analytic  --->
+<!--- 2 path to your .json file in pathToKeyFile (make sure it is NOT browsable 
+
+
+   
+--->
+
+
+
+
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
