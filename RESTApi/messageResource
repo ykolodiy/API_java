@@ -26,8 +26,8 @@ public class MessageResource {
 	@GET
 	@Path("/{variable}")
     @Produces(MediaType.TEXT_PLAIN)
-	  public String test() {
-	        return "fuck";
+	  public String test(@PathParam("variable") String variable {
+	        return variable;
 	    }
 	
 	
