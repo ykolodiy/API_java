@@ -1,4 +1,4 @@
 1 create maven project in eclipse > type jersey-quickstart-webapp https://www.youtube.com/watch?v=skltzZH7i4w&list=PLqq-6Pq4lTTZh5U8RbdXq0WaYvZBz2rbn&index=11
-2 groupid /package/ for your project atifact id class name
+2 groupid /package/ for your project atifact id class name      MAVEN DOWNLOADS JARS FOR YOU
 3 add server
 4 run
