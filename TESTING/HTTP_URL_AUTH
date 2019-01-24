@@ -32,7 +32,9 @@ public class HttpClient_AUTH {
 		
 
 // PARSE JSON AFTER THAT
-
+	JSONObject myObject = new JSONObject(EntityUtils.toString(response.getEntity(), "UTF-8"));
+	
+		System.out.println(myObject.getString("message").toString());
 	}
 
 }
