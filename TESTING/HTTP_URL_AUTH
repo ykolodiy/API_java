@@ -1,0 +1,38 @@
+package API_CALLS;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.http.HttpHeaders;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+
+public class HttpClient_AUTH {
+
+	public static void main(String[] args) throws Exception, IOException {
+		
+		
+		HttpGet request = new HttpGet("https://dog.ceo/api/breeds/image/random");
+		String auth = "login" + ":" + "password";
+		byte[] encodedAuth = Base64.encodeBase64(
+		  auth.getBytes(StandardCharsets.ISO_8859_1));
+		String authHeader = "Basic " + new String(encodedAuth);
+		request.setHeader(HttpHeaders.AUTHORIZATION, authHeader);
+		 
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpResponse response = client.execute(request);
+		 
+		//int statusCode = response.getStatusLine().getStatusCode();
+
+		System.out.println(EntityUtils.toString(response.getEntity(), "UTF-8"));
+		
+
+// PARSE JSON AFTER THAT
+
+	}
+
+}
