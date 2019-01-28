@@ -1,0 +1,52 @@
+1 add to pom 
+  <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>1.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.6.2</version>
+            <scope>test</scope>
+        </dependency>
+<dependency>
+    <groupId>io.rest-assured</groupId>
+    <artifactId>rest-assured</artifactId>
+    <version>3.0.2</version>
+    <scope>test</scope>
+</dependency>
+
+2 import to class 
+import org.junit.Test;
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
+
+3 run class
+
+public class GarageRestTest{
+
+    @Test
+    public void basicPingTest() {
+        given().when().get("https://jsonplaceholder.typicode.com/users").then().statusCode(200);
+    }
+	
+    @Test
+    public void verifyNameStructured() {
+        given().when().get("https://jsonplaceholder.typicode.com/todos/1").then()
+            .body("title",equalTo("delectus aut autem"));
+    }
+	
+}
+
+
+
+//https://techbeacon.com/app-dev-testing/how-perform-api-testing-rest-assured
