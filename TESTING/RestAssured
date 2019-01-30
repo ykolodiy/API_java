@@ -33,6 +33,15 @@ import static org.hamcrest.Matchers.*;
 3 run class
 
 public class GarageRestTest{
+
+	public void test() {
+		   get("https://jsonplaceholder.typicode.com/users").then().statusCode(200);
+	       String k = get("https://jsonplaceholder.typicode.com/users/5").path("name");
+	       System.out.println(k);
+	}
+
+
+
 @Test
     public void basicPingTest() {
        get("https://jsonplaceholder.typicode.com/users").then().statusCode(200);
