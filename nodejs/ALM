@@ -1,0 +1,108 @@
+/* eslint-disable dot-notation */
+/* eslint-disable no-unused-vars */
+/* eslint-disable quote-props */
+/* eslint-disable space-infix-ops */
+/* eslint-disable prefer-template */
+/* eslint-disable object-curly-spacing */
+/* eslint-disable new-cap */
+/* eslint-disable no-buffer-constructor */
+/* eslint-disable max-len */
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-console */
+/* eslint-disable camelcase */
+
+/**
+ *  https://aneejian.com/hp-alm-rest-api-authentication/
+    check out the post here jungleeforce.wordpress.com/2015/01/21/node-js-alm-rest-api-awesome/
+* */
+
+const http = require('http');
+const fs = require('fs');
+const xml2js = require('xml2js');
+
+const config = JSON.parse(fs.readFileSync('config.json'));// this refers to a file where I have all my config like host, userName, password Etc
+
+// this is added to avoid the TLS error. Uncomment if you get a TLS error while authenticating.
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+
+// set the correct options for the call.
+const options = {
+    host: config.host,
+    port: config.port,
+    // path: '/qcbin/authentication-point/authenticate?login-form-required=y', // old alm version < 12.51
+    path: '/qcbin/api/authentication/sign-in',
+    method: 'GET',
+    headers: {'Authorization': 'Basic '+new Buffer(config.alm_userName + ':' + config.alm_password).toString('base64')},
+};
+    // authenticating the user into ALM
+ALMConnect(options, 'header', '', (status, data) => {
+    if (status) {
+        // get the LWSSO_Cookie from the header. This is the session cookie which will be used in all callouts to ALM.
+        if (data.headers['set-cookie'] !== undefined) {
+            extractDefects(data.headers['set-cookie']);
+        } else {
+            console.log('Dagnabbit!! ERROR:  Unable to login, check your username/password/serverURL.');
+        }
+    } else {
+        console.log(`Dagnabbit!! ERROR:  ${JSON.stringify(data)}`);
+    }
+});
+
+// Function to extract the defects for analysis.
+function extractDefects(LWSSO_Cookie) {
+    const opt = {
+        host: config.host,
+        port: config.port,
+        path: `/qcbin/rest/domains/${config.domain}/projects/${config.project}/tests/18000`,
+        // path: '/qcbin/rest/is-authenticated',
+        method: 'GET',
+        headers: { Cookie: LWSSO_Cookie },
+    };
+
+    ALMConnect(opt, 'data', '', (status, data) => {
+        if (status) {
+            let casestatus = '';
+            // write the defects to an XML file in local drive.
+            // fs.writeFileSync('newDefect.xml', data);
+            // console.log('response77: '+data);
+
+            xml2js.parseString(data, (err, resultjson) => {
+                if (err) {
+                    console.error('Cant Parse xml2js');
+                    return;
+                }
+                casestatus = resultjson; // thanks https://jsonpathfinder.com/
+                console.log('STATUS: ' +JSON.stringify(casestatus.Entity.Fields[0].Field[16].Value[0]));
+                console.log('ALM TC ID: ' +JSON.stringify(casestatus.Entity.Fields[0].Field[7].Value[0]));
+            });
+
+            // once you get the defectXML you can parse it into JSON and push it other databases like SFDC etc..
+        } else {
+            console.log(`Dagnabbit!! ERROR:  ${JSON.stringify(data)}`);
+        }
+    });
+}
+
+function ALMConnect(opt, responseType, requestBody, callback) {
+    const request = http.request(opt, (res) => {
+        res.setEncoding('utf8');
+        let XMLoutput = '';
+        res.on('data', (chunk) => {
+            XMLoutput += chunk;
+        });
+        res.on('end', () => {
+            if (responseType === 'data') {
+                callback(true, XMLoutput);
+            } else {
+                callback(true, res);
+            }
+        });
+    });
+    request.on('error', (e) => {
+        callback(false, e);
+    });
+    if (opt.method === 'POST' || opt.method === 'PUT') {
+        request.write(requestBody);
+    }
+    request.end();
+}
